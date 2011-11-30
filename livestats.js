@@ -17,6 +17,7 @@ var LiveStats = {
 
     _pingInterval: 1,  // Default value in seconds
     _pingUrl: 'livestats.php',
+    // TODO(ssaunier): implement timeout (after 30 minutes, consider a user DISCONNECTED, not IDLE)
     
     _timer: null,
     _state: 1,  // Default as reading
@@ -34,7 +35,6 @@ var LiveStats = {
      * Ping Interval in seconds.
      */   
     init: function(pingInterval, pingUrl) {
-        this._sessionId = this._guidGenerator();
         if (pingUrl) {
             this._pingUrl = pingUrl;
         }
@@ -78,6 +78,11 @@ var LiveStats = {
             xhr.open("POST", this._pingUrl, true);
             xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             xhr.send(params);
+            var self = this;
+            xhr.onreadystatechange = function() {
+              if (xhr.readyState == 4)
+                  self._sessionId  = xhr.responseText;
+            }
         }
     },
     
@@ -110,16 +115,6 @@ var LiveStats = {
              console.log('Ajax not supported by your browser. Disabling the timer...');
              this.stop();
          }
-     },
-     
-     /* Courtesy of John Milikin http://stackoverflow.com/a/105074 */
-     _guidGenerator: function() {
-         var S4 = this._s4GuidGeneratorHelper;
-         return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
-     },
-     
-     _s4GuidGeneratorHelper: function() {
-         return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
      },
     
      _setTimer: function() {

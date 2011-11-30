@@ -1,4 +1,4 @@
-<?php
+<?php session_start();
 // Sanity checks
 if (!array_key_exists('sessionId', $_POST)
     || !array_key_exists('state', $_POST))
@@ -8,11 +8,9 @@ require_once(dirname(__FILE__) . '/State.php');
 $state = State::getValidState($_POST['state']);
 if ($state === NULL)
     die();
-    
-$sessionId = $_POST['sessionId'];
-if (!preg_match('/^\{?[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}\}?$/', $sessionId))
-    die();
+
+$sessionId = session_id();
 
 // TODO(ssaunier): store data.
-
+echo $sessionId;
 ?>
