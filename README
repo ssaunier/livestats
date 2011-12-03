@@ -22,5 +22,5 @@ Future work:
 
 ---------------------------------------------------
 Dashboard:
-I'll first right a very simple page showing the content of the DB.
+I'll first write a very simple page showing the content of the DB.
 Then I think I'll collect IPs and plot that on Google Maps.

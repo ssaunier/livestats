@@ -5,12 +5,9 @@ if (!array_key_exists('sessionId', $_POST)
     die();
 
 require_once(dirname(__FILE__) . '/State.php');
-$state = State::getValidState($_POST['state']);
-if ($state === NULL)
+$state = new State($_POST['state'], session_id());
+if (!$state->isValid())
     die();
 
-$sessionId = session_id();
-
-// TODO(ssaunier): store data.
-echo $sessionId;
+$state->store(dirname(__FILE__) .'/../db/livestats.sqlite');
 ?>
