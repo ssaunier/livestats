@@ -12,6 +12,23 @@
 function Livestats(pingUrl, pingInterval) 
 {
     var that = this;  // Convention workaround of ECMAScript.
+    
+    /**
+     * Start to track the current visitor by sending a heartbeat.
+     * every _pingInterval to _pingUrl.
+     */ 
+    this.start = function() {
+        _reportState();
+    };
+    
+    /**
+     * Stop to track current visitor activity.
+     */ 
+    this.stop = function() {
+        clearTimeout(that._timer);
+    };
+    
+    // "Enum" of available states (this is kept in sync with backend).
     var State =
     {
         IDLE: 0,
@@ -19,14 +36,16 @@ function Livestats(pingUrl, pingInterval)
         WRITING: 2
     };
 
-    var _pingInterval = pingInterval || 15;
-    var _pingUrl = pingUrl || 'backend/php/livestats.php';
+    // Ping parameters
+    var _pingInterval = pingInterval || 15;  // Default ping as 15 seconds.
+    var _pingUrl = pingUrl;
     
     var _timer = null;
     var _state = 1;  // When loading the page, the user is reading.
     var _scrollPosition = 0;
     var _sessionId = null;
     
+    // Events we want to capture to track visitor activity.
     var _events =
     {
         _mouseActivityDetected: false,
@@ -39,13 +58,7 @@ function Livestats(pingUrl, pingInterval)
             Event.MOUSEMOVE | Event.KEYPRESS | Event.CLICK);
     }
     
-    this.start = function() {
-        _reportState();
-    };
-    
-    this.stop = function() {
-        clearTimeout(that._timer);
-    };
+    /* Private methods below */
     
     function _computeState() {
         _computeScrolling();

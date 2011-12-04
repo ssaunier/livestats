@@ -18,8 +18,8 @@
     
     <script type="text/javascript" src="../livestats.js"></script>
     <script type="text/javascript">
-        // Init livestats counter with a ping hearbeat at 5 seconds
-        var spy = new Livestats('../backend/php/livestats.php', 5);
+        // Init livestats counter and start it.
+        var spy = new Livestats('../backend/php/livestats.php');
         spy.start();
     </script>
   </body>
