@@ -1,6 +1,6 @@
 # Livestats - Track your visitors in real-time !
 
-## Goal: a lightweight solution to get a real-time snapshot of how many visitors are connected on your website.
+## Goal: a lightweight solution to get a real-time snapshot of your visitor activity.
 
 The idea is to get a dashboard like this.
 
