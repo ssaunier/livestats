@@ -88,10 +88,7 @@ $state = State::countStates();
 ?>
 ```
 
-I setup a script as a cron job for [Sogedis](http://pieces-detachees.sogedis.fr), 
-an French household appliance spare parts e-commerce, to feed a 
-[Ducksboard](http://www.ducksboard.com) dashboard.
-
+You can also setup a cron job to feed a [Ducksboard](http://www.ducksboard.com) dashboard.
 You can view this example on [Gist](https://gist.github.com/1430616).
 
 ## Information collected
