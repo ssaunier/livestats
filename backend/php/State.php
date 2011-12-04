@@ -3,7 +3,7 @@
  * Livestats PHP Backend library
  * https://github.com/ssaunier/livestats
  *
- * Copyright 2011, Sébastien Saunier
+ * Copyright 2011, Sébastien Saunier <sebastien.saunier@gmail.com>
  * Dual licensed under the MIT or GPL Version 2 licenses.
  *
  * Date: 12/03/2011

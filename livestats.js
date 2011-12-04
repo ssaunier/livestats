@@ -2,124 +2,116 @@
  * Livestats Javascript library
  * https://github.com/ssaunier/livestats
  *
- * Copyright 2011, Sébastien Saunier
+ * Copyright 2011, Sébastien Saunier <sebastien.saunier@gmail.com>
  * Dual licensed under the MIT or GPL Version 2 licenses.
  *
  * Date: 12/01/2011
+ *
+ * Compatible with IE 5.5+.
  */
-
-var Livestats = {
-    State: {
+function Livestats(pingUrl, pingInterval) 
+{
+    var that = this;  // Convention workaround of ECMAScript.
+    var State =
+    {
         IDLE: 0,
         READING: 1,
         WRITING: 2
-    },
+    };
 
-    _pingInterval: 15,  // Default value in seconds
-    _pingUrl: 'backend/php/livestats.php',
+    var _pingInterval = pingInterval || 15;
+    var _pingUrl = pingUrl || 'backend/php/livestats.php';
     
-    _timer: null,
-    _state: 1,  // Default as reading
-    _scrollPosition: 0,
-    _sessionId: null,
+    var _timer = null;
+    var _state = 1;  // When loading the page, the user is reading.
+    var _scrollPosition = 0;
+    var _sessionId = null;
     
-    _events: {
+    var _events =
+    {
         _mouseActivityDetected: false,
         _keyPressed: false,
-        _mouseScrolled: false,
-    },
+        _mouseScrolled: false
+    };
     
-    /**
-     * Ping Interval in seconds.
-     */   
-    init: function(pingUrl, pingInterval) {
-        if (pingUrl) {
-            this._pingUrl = pingUrl;
-        }
-        if (pingInterval) {
-            this._pingInterval = pingInterval;
-        }
-        if (document.captureEvents) {
-            document.captureEvents(
-                Event.MOUSEMOVE | Event.KEYPRESS | Event.CLICK);
-        }
-       
-        this._reportState();
-        return this;
-    },
+    if (document.captureEvents) {
+        document.captureEvents(
+            Event.MOUSEMOVE | Event.KEYPRESS | Event.CLICK);
+    }
     
-    stop: function() {
-        clearTimeout(this._timer);
-    },
+    this.start = function() {
+        _reportState();
+    };
     
-    _computeState: function() {
-        this._computeScrolling();
-        if(this._events._keyPressed)
-            this._state = this.State.WRITING;
-        else if (this._events._mouseActivityDetected || this._events._mouseScrolled) 
-            this._state = this.State.READING;            
+    this.stop = function() {
+        clearTimeout(that._timer);
+    };
+    
+    function _computeState() {
+        _computeScrolling();
+        if(_events._keyPressed)
+            _state = State.WRITING;
+        else if (_events._mouseActivityDetected || _events._mouseScrolled) 
+            _state = State.READING;            
         else
-            this._state = this.State.IDLE;
+            _state = State.IDLE;
 
-        this._reportState();
-    },
+        _reportState();
+    };
     
-    _reportState: function() {
-        this._pingServerWithNewState();
-        this._rebindHandlers();
-        this._setTimer();
-    },
+    function _reportState() {
+        _pingServerWithNewState();
+        _rebindHandlers();
+        _setTimer();
+    };
     
-    _pingServerWithNewState: function() {
-        xhr = this._createXMLHttpRequest();
+    function _pingServerWithNewState() {
+        xhr = _createXMLHttpRequest();
         if (xhr) {
-            var params = "state=" + this._state + "&sessionId=" + this._sessionId;
-            xhr.open("POST", this._pingUrl, true);
+            var params = "state=" + _state + "&sessionId=" + _sessionId;
+            xhr.open("POST", _pingUrl, true);
             xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             xhr.send(params);
-            var self = this;
             xhr.onreadystatechange = function() {
               if (xhr.readyState == 4)
-                  self._sessionId  = xhr.responseText;
+                  _sessionId  = xhr.responseText;
             }
         }
-    },
+    };
     
-    _rebindHandlers: function() {
-        this._events._mouseActivityDetected = false;
-        this._events._keyPressed = false;
-        var self = this;
+    function _rebindHandlers() {
+        _events._mouseActivityDetected = false;
+        _events._keyPressed = false;
         document.onmousemove = function() {
-            self._events._mouseActivityDetected = true;
+            _events._mouseActivityDetected = true;
         }
         document.onkeypress = function() {
-            self._events._keyPressed = true;
+            _events._keyPressed = true;
         }
-    },
+    };
     
-    _computeScrolling: function() {
+    function _computeScrolling() {
         var newScrollPosition = 
             (document.body && typeof document.body.scrollTop !== "undefined") ?
                 document.body.scrollTop : 
                 ((typeof document.documentElement !== "undefined") 
                 ? document.documentElement.scrollTop : 0);
-        this._events._mouseScrolled = newScrollPosition != this._scrollPosition;
-        this._scrollPosition = newScrollPosition;
-    },
+        _events._mouseScrolled = newScrollPosition != _scrollPosition;
+        _scrollPosition = newScrollPosition;
+    };
     
-    _createXMLHttpRequest: function() {
+    function _createXMLHttpRequest() {
          try { return new XMLHttpRequest(); } catch(e) {}
          try { return new ActiveXObject("Msxml2.XMLHTTP"); } catch (e) {}
          if (window.console && window.console.log) {
              console.log('Ajax not supported by your browser. Disabling the timer...');
-             this.stop();
+             that.stop();
          }
-     },
+     };
     
-     _setTimer: function() {
-         var self = this;
-         this._timer = setTimeout(function() {
-             self._computeState();
-         }, this._pingInterval * 1000);
-     }
+     function _setTimer() {
+         that._timer = setTimeout(function() {
+             _computeState();
+         }, _pingInterval * 1000);
+     };
 };
