@@ -4,6 +4,7 @@
 ### Goal: a lightweight solution to get a real-time snapshot of how many visitors are connected on your website.
 
 The idea is to get a dashboard like this.
+
 ```
 +--------+--------+--------+--------+
 |   42   |   36   |    2   |   4    |
@@ -32,6 +33,7 @@ So what do you need to run this solution on this server ?
 ### Setup
 
 Push to your server the following files, say in the ```/js/livestats``` repository:
+
 ```
 /js/livestats
       +- backend
