@@ -1,7 +1,6 @@
-# Livestats
-## Track your visitors in real-time !
+# Livestats - Track your visitors in real-time !
 
-### Goal: a lightweight solution to get a real-time snapshot of how many visitors are connected on your website.
+## Goal: a lightweight solution to get a real-time snapshot of how many visitors are connected on your website.
 
 The idea is to get a dashboard like this.
 
@@ -12,7 +11,7 @@ The idea is to get a dashboard like this.
 +--------+--------|--------+--------|
 ```
 
-### Motivation: build and share basic features of realtime tracking services.
+## Motivation: build and share basic features of realtime tracking services.
 
 I started this project after using 
 [GoSquared](http://www.gosquared.com/) and [Chartbeat](http://www.chartbeat.com/).
@@ -23,11 +22,11 @@ As one can understand, those great services are not free. And if you just
 want a basic dashboard like the one described above, you may want to find
 a free (and open-source maybe ? :)) solution !. Here Livestats come!
 
-### License
+## License
 This project is licensed under the [MIT](http://www.opensource.org/licenses/mit-license.php) 
 or [GPL Version 2](http://www.opensource.org/licenses/gpl-2.0.php).
 
-### Requirements
+## Requirements
 
 So what do you need to run this solution on this server ?
 
@@ -35,7 +34,7 @@ So what do you need to run this solution on this server ?
 * At least PHP 5.1 on the server (needs [PDO](http://www.php.net/manual/ref.pdo-sqlite.php) with SQLite support).
 * some _really basic_ setup
 
-### Setup
+## Setup
 
 Push to your server the following files, say in the ```/js/livestats``` repository:
 
@@ -71,7 +70,7 @@ can tweak that giving a second parameter to the ```Livestats``` constructor.
   var spy = new Livestats('js/livestats/backend/php/livestats.php', 30);
 ```
 
-### Usage example
+## Usage example
 
 You can use the library ```backend/php/State.php``` to use the information
 collected. 
@@ -90,7 +89,7 @@ an French household appliance spare parts e-commerce, to feed a
 
 You can view this example on [Gist](https://gist.github.com/1430616).
 
-### Information collected
+## Information collected
 
 For the first release, Livestats only collect:
 
