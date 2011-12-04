@@ -82,9 +82,10 @@ require_once('/your/path/to/backend/php/State.php');
 $state = State::countStates();
 // Do something with $state['total'], $state['reading'], $state['writing'] or $state['idle'];
 ?>
+```
 
 I setup a script as a cron job for [Sogedis](http://pieces-detachees.sogedis.fr), 
-an French household applicance spare parts e-commerce, to feed a 
+an French household appliance spare parts e-commerce, to feed a 
 [Ducksboard](http://www.ducksboard.com) dashboard.
 
 You can view this example on [Gist](https://gist.github.com/1430616).
