@@ -22,6 +22,11 @@ As one can understand, those great services are not free. And if you just
 want a basic dashboard like the one described above, you may want to find
 a free (and open-source maybe ? :)) solution !. Here Livestats come!
 
+## Restrictions
+This solution has not been tested on heavy traffic websites. It uses your server resources to work.
+If you have a lot of visitors, you may want to consider professional solutions
+in the cloud like [GoSquared](http://www.gosquared.com/) and [Chartbeat](http://www.chartbeat.com/).
+
 ## License
 This project is licensed under the [MIT](http://www.opensource.org/licenses/mit-license.php) 
 or [GPL Version 2](http://www.opensource.org/licenses/gpl-2.0.php).
