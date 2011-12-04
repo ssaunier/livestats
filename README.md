@@ -27,7 +27,7 @@ a free (and open-source maybe ? :)) solution !. Here Livestats come!
 So what do you need to run this solution on this server ?
 
 * Javascript turned on in the client browser
-* At least PHP 5.1on the server
+* At least PHP 5.1 on the server (needs [PDO](http://www.php.net/manual/ref.pdo-sqlite.php) with SQLite support).
 * some _really basic_ setup
 
 ### Setup
@@ -58,10 +58,12 @@ Then open your main page ```index.php``` and add at the very bottom (just before
 ### Information collected
 
 For the first release, Livestats only collect:
-- Number of visitors
-- State of each visitor: Idle, Reading or Writing
+
+* Number of visitors
+* State of each visitor: Idle, Reading or Writing
 
 What we may want to add (Fork !) to future releases:
-- URL visited
-- Referer
-- Keywords
+
+* URL visited
+* Referer
+* Keywords
