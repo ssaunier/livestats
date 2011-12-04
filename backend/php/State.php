@@ -13,21 +13,36 @@
  */
 class State {
     
+    /**
+     * Available realtime visitor states. Think of it as an enum.
+     */ 
     const IDLE = 0;
     const READING = 1;
     const WRITING = 2;
     
     /**
      * TODO: add a 'counter_id' column so that we can track several counters with the same DB.
+     * 
+     * Table holding visitor states data. The schema is as follow:
      * CREATE TABLE livestats (session_id VARCHAR(255), last_seen DATETIME, state INTEGER);
      */ 
     const TABLE = 'livestats';
     
+    /**
+     * The state of $this visitor. Can take a value defined by the 'enum'
+     * at the beginning of the file.
+     * @see isValid() for state integrity checking.
+     */
     private $state;
+    
+    /**
+     * The session_id() of $this visitor.
+     */
     private $sessionId;
     
-    public function __construct($dirtyState, $sessionId) { 
-        $this->state = intval($dirtyState);
+    public function __construct($state, $sessionId)
+    { 
+        $this->state = intval($state);
         $this->sessionId = $sessionId;
     }
     
@@ -35,7 +50,8 @@ class State {
      * Checks whether the current state built at the construction
      * of $this is correct, i.e. is either IDLE, READING or WRITING.
      */ 
-    public function isValid() {
+    public function isValid()
+    {
         switch ($this->state) {
             case self::IDLE:
             case self::READING:
@@ -49,10 +65,14 @@ class State {
     /**
      * Stores the current State to the DB.
      */ 
-    public function store($db_file) {
+    public function store($db_file = NULL)
+    {
         if (!is_int($this->state))
             throw new Exception('Found a non valid state in current object. Won\'t store it.');
-            
+        
+        if ($db_file === NULL)
+            $db_file = self::_getDefaultDB();
+        
         $handle = new PDO('sqlite:' . $db_file);
         $query = 
             sprintf(
@@ -72,7 +92,11 @@ class State {
      * @param $timeout after which an entry is removed from the DB (relatively to last_seen column)
      * @return an array('total', 'idle', 'reading', 'writing')
      */ 
-    public static function countStates($db_file, $timeout = '-30 seconds') {
+    public static function countStates($db_file = NULL, $timeout = '-30 seconds')
+    {
+        if ($db_file === NULL)
+            $db_file = self::_getDefaultDB();
+        
         $handle = new PDO('sqlite:' . $db_file);
         self::_clearTimeout($handle, $timeout);
         $query = sprintf(
@@ -107,7 +131,11 @@ class State {
     /**
      * Debugging method which prints the content of the livestats table.
      */ 
-    public static function printStates($db_file) {
+    public static function printStates($db_file = NULL)
+    {
+        if ($db_file === NULL)
+            $db_file = self::_getDefaultDB();
+            
         $handle = new PDO('sqlite:' . $db_file);
         $results = $handle->query('SELECT * FROM ' . self::TABLE)->fetchAll(PDO::FETCH_ASSOC);
         if (empty($results)) {
@@ -129,12 +157,22 @@ class State {
      * @param $timeout written as a string, fed to strtotime 
      * @see http://www.php.net/manual/fr/datetime.formats.relative.php
      */
-    private static function _clearTimeout($handle, $timeout) {  
+    private static function _clearTimeout($handle, $timeout)
+    {  
         $timeout_date = date("Y-m-d h:i:s", strtotime($timeout));
         $query = sprintf(
             "DELETE FROM %s WHERE last_seen < %s",
             self::TABLE, $handle->quote($timeout_date));
         $handle->exec($query);
     }
-}
+    
+    /**
+     * When using the package as is, the user can call $this->store()
+     * and self::countStates() without specifying the path to the Sqlite DB.
+     */ 
+    private static function _getDefaultDB()
+    {
+        return sprintf("%s/../db/livestats.sqlite", dirname(__FILE__));
+    }
+};
 ?>

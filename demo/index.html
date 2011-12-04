@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+  <head>
+      <title>Demo with PHP Backend</title>
+      <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+      <style type="text/css">
+          #results { border: 1px solid #DDD; }
+      </style>
+  </head>
+  <body>
+    <h1>Demo: Livestats counter started...</h1>
+    <p>The counter has been started and will push the visitor (you) state every 5 seconds.</p>
+    <input type="text" placeholder="type something here to test the 'writing' state..." size="50"/><br />
+    <button onclick="spy.stop()">Stop pushing my state !</button>
+    
+    <h2>Results</h2>
+    <p>This iframe shows you the JSON results of <code>getlivestats.php</code>.</p>
+    <p>You can open another browser to get more visitors here.</p>
+    <button onclick="reloadResults()">Auto-refresh results</button>
+    <br />
+    <iframe id="results" width="400" height="40" src="getlivestats.php"></iframe>
+    
+    <script type="text/javascript" src="../livestats.js"></script>
+    <script type="text/javascript">
+        // Init livestats counter with a ping hearbeat at 5 seconds
+        var spy = Livestats.init('../backend/php/livestats.php', 1);
+        
+        // Refresh results
+        var timeoutReloadResults = null;
+        function reloadResults() {
+          clearTimeout(timeoutReloadResults);
+          var results = document.getElementById('results');
+          results.style.borderColor = 'green';
+          setTimeout(function() { results.style.borderColor = '#DDD' }, 200);
+          results.contentDocument.location.reload(true);
+          timeoutReloadResults = setTimeout(reloadResults, 2000);
+        }
+    </script>
+    
+  </body>
+</html>
