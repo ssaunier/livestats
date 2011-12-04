@@ -5,13 +5,13 @@ to your website. The goal is to use this info to build this following dashboard
 widget:
 
 +--------+--------+--------+--------+
-|   42   |   36   |   2    |   4    |
-|  Total |  Read  | Write  |  Idle  |
+|   42   |   36   |    2   |   4    |
+|  Total |  Read  |  Write |  Idle  |
 +--------+--------|--------+--------|
 
 Requirements:
 - Javascript turned on in the client browser.
-- PHP and SQLite enabled on the server
+- PHP 5.1+ (requires PDO SQLite, available by default http://php.net/manual/en/ref.pdo-sqlite.php)
 
 Information currently collected:
 - Number of visitors

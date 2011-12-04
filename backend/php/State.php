@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * Livestats PHP Backend library
  * https://github.com/ssaunier/livestats
  *
@@ -7,6 +7,9 @@
  * Dual licensed under the MIT or GPL Version 2 licenses.
  *
  * Date: 12/03/2011
+ *
+ * Requirement: PDO_SQLITE, included in PHP >= 5.1
+ * (@see http://php.net/manual/en/ref.pdo-sqlite.php)
  */
 class State {
     
@@ -14,6 +17,10 @@ class State {
     const READING = 1;
     const WRITING = 2;
     
+    /**
+     * TODO: add a 'counter_id' column so that we can track several counters with the same DB.
+     * CREATE TABLE livestats (session_id VARCHAR(255), last_seen DATETIME, state INTEGER);
+     */ 
     const TABLE = 'livestats';
     
     private $state;
@@ -43,16 +50,19 @@ class State {
      * Stores the current State to the DB.
      */ 
     public function store($db_file) {
+        if (!is_int($this->state))
+            throw new Exception('Found a non valid state in current object. Won\'t store it.');
+            
+        $handle = new PDO('sqlite:' . $db_file);
         $query = 
             sprintf(
-                'DELETE FROM %4$s WHERE session_id = \'%1$s\'; '
-                . 'INSERT INTO %4$s VALUES (\'%1$s\', \'%2$s\', %3$s)',
-                sqlite_escape_string($this->sessionId),
-                date("Y-m-d h:i:s"),
-                sqlite_escape_string($this->state),
+                'DELETE FROM %4$s WHERE session_id = %1$s; '
+                . 'INSERT INTO %4$s VALUES (%1$s, %2$s, %3$s)',
+                $handle->quote($this->sessionId),
+                $handle->quote(date("Y-m-d h:i:s")),
+                $this->state,
                 self::TABLE);
-        $handle = sqlite_open($db_file);
-        sqlite_exec($handle, $query);
+        $handle->exec($query);
     }
 
     /**
@@ -62,28 +72,29 @@ class State {
      * @param $timeout after which an entry is removed from the DB (relatively to last_seen column)
      * @return an array('total', 'idle', 'reading', 'writing')
      */ 
-    public static function countStates($db_file, $timeout = '-15 minutes') {
-        $handle = sqlite_open($db_file);
+    public static function countStates($db_file, $timeout = '-30 seconds') {
+        $handle = new PDO('sqlite:' . $db_file);
         self::_clearTimeout($handle, $timeout);
-        
         $query = sprintf(
             'SELECT COUNT(*) as c, state FROM %s GROUP BY state', self::TABLE);
-        $entries = sqlite_fetch_all(sqlite_query($handle, $query), SQLITE_ASSOC);
+        $results = $handle->query($query)->fetchAll(PDO::FETCH_ASSOC);
         
         $idle = 0; $reading = 0; $writing = 0;
-        foreach ($entries as $entry) {
-            switch (intval($entry['state'])) {
-                case self::IDLE:
-                    $idle = $entry['c'];
-                    break;
-                case self::READING:
-                    $reading = $entry['c'];
-                    break;
-                case self::WRITING:
-                    $writing = $entry['c'];
-                    break;
-                default:
-                    continue;
+        if (!empty($results)) {
+            foreach ($results as $entry) {
+                switch (intval($entry['state'])) {
+                    case self::IDLE:
+                        $idle = $entry['c'];
+                        break;
+                    case self::READING:
+                        $reading = $entry['c'];
+                        break;
+                    case self::WRITING:
+                        $writing = $entry['c'];
+                        break;
+                    default:
+                        continue;
+                }
             }
         }
                 
@@ -97,10 +108,13 @@ class State {
      * Debugging method which prints the content of the livestats table.
      */ 
     public static function printStates($db_file) {
-        $query = 'SELECT * FROM ' . self::TABLE;
-        $dbhandle = sqlite_open($db_file);
-        $handle = sqlite_fetch_all(sqlite_query($handle, $query), SQLITE_ASSOC);
-        foreach ($entries as $entry) {
+        $handle = new PDO('sqlite:' . $db_file);
+        $results = $handle->query('SELECT * FROM ' . self::TABLE)->fetchAll(PDO::FETCH_ASSOC);
+        if (empty($results)) {
+            echo 'Nothing to display<br />';
+            return;
+        }
+        foreach ($results as $entry) {
             echo '{ session_id: ' . $entry['session_id'] 
                  . ', last_seen: ' . $entry['last_seen'] 
                  . ', state: ' . $entry['state'] . ' } <br  />';
@@ -118,8 +132,9 @@ class State {
     private static function _clearTimeout($handle, $timeout) {  
         $timeout_date = date("Y-m-d h:i:s", strtotime($timeout));
         $query = sprintf(
-            "DELETE FROM %s WHERE last_seen < '%s'", self::TABLE, $timeout_date);
-        sqlite_exec($handle, $query);
+            "DELETE FROM %s WHERE last_seen < %s",
+            self::TABLE, $handle->quote($timeout_date));
+        $handle->exec($query);
     }
 }
 ?>

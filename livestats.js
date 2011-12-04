@@ -8,20 +8,18 @@
  * Date: 12/01/2011
  */
 
-var LiveStats = {
+var Livestats = {
     State: {
         IDLE: 0,
         READING: 1,
         WRITING: 2
     },
 
-    _pingInterval: 1,  // Default value in seconds
-    _pingUrl: 'livestats.php',
-    // TODO(ssaunier): implement timeout (after 30 minutes, consider a user DISCONNECTED, not IDLE)
+    _pingInterval: 15,  // Default value in seconds
+    _pingUrl: 'backend/php/livestats.php',
     
     _timer: null,
     _state: 1,  // Default as reading
-    _ie: document.all ? true : false,
     _scrollPosition: 0,
     _sessionId: null,
     
@@ -34,15 +32,16 @@ var LiveStats = {
     /**
      * Ping Interval in seconds.
      */   
-    init: function(pingInterval, pingUrl) {
+    init: function(pingUrl, pingInterval) {
         if (pingUrl) {
             this._pingUrl = pingUrl;
         }
         if (pingInterval) {
             this._pingInterval = pingInterval;
         }
-        if (!this._ie) {
-            document.captureEvents(Event.MOUSEMOVE | Event.KEYPRESS | Event.CLICK);
+        if (document.captureEvents) {
+            document.captureEvents(
+                Event.MOUSEMOVE | Event.KEYPRESS | Event.CLICK);
         }
        
         this._reportState();
@@ -111,7 +110,7 @@ var LiveStats = {
     _createXMLHttpRequest: function() {
          try { return new XMLHttpRequest(); } catch(e) {}
          try { return new ActiveXObject("Msxml2.XMLHTTP"); } catch (e) {}
-         if (window.console && window.console.loca) {
+         if (window.console && window.console.log) {
              console.log('Ajax not supported by your browser. Disabling the timer...');
              this.stop();
          }
