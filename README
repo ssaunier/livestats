@@ -1,7 +1,13 @@
 /!\ This is Work in Progress ! /!\
 
 A little JS/Php solution to get a real-time view of the visitors connected
-to your website.
+to your website. The goal is to use this info to build this following dashboard
+widget:
+
++--------+--------+--------+--------+
+|   42   |   36   |   2    |   4    |
+|  Total |  Read  | Write  |  Idle  |
++--------+--------|--------+--------|
 
 Requirements:
 - Javascript turned on in the client browser.
