@@ -37,7 +37,7 @@ function Livestats(pingUrl, pingInterval)
     };
 
     // Ping parameters
-    var _pingInterval = pingInterval || 15;  // Default ping as 15 seconds.
+    var _pingInterval = pingInterval || 30;  // Default ping as 30 seconds.
     var _pingUrl = pingUrl;
     
     var _timer = null;

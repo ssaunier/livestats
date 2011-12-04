@@ -67,12 +67,12 @@ Then open your main page ```index.php``` and add at the very bottom (just before
 ```
 
 It will setup a ```Livestats``` javascript object and start hearbeating
-to your server. The default ping interval is set to 15 seconds, but you
+to your server. The default ping interval is set to 30 seconds, but you
 can tweak that giving a second parameter to the ```Livestats``` constructor.
 
 ```javascript
-  // Starting a new spy with a ping interval of 30 seconds.
-  var spy = new Livestats('js/livestats/backend/php/livestats.php', 30);
+  // Starting a new spy with a ping interval of 15 seconds.
+  var spy = new Livestats('js/livestats/backend/php/livestats.php', 15);
 ```
 
 ## Usage example

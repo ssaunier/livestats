@@ -92,7 +92,7 @@ class State {
      * @param $timeout after which an entry is removed from the DB (relatively to last_seen column)
      * @return an array('total', 'idle', 'reading', 'writing')
      */ 
-    public static function countStates($db_file = NULL, $timeout = '-30 seconds')
+    public static function countStates($db_file = NULL, $timeout = '-1 minute')
     {
         if ($db_file === NULL)
             $db_file = self::_getDefaultDB();
