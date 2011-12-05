@@ -3,7 +3,7 @@
  * https://github.com/ssaunier/livestats
  *
  * Copyright 2011, Sébastien Saunier <sebastien.saunier@gmail.com>
- * Dual licensed under the MIT or GPL Version 2 licenses.
+ * MIT License
  *
  * Date: 12/01/2011
  *

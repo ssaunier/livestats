@@ -28,20 +28,21 @@ If you have a lot of visitors, you may want to consider professional solutions
 in the cloud like [GoSquared](http://www.gosquared.com/) and [Chartbeat](http://www.chartbeat.com/).
 
 ## License
-This project is licensed under the [MIT](http://www.opensource.org/licenses/mit-license.php) 
-or [GPL Version 2](http://www.opensource.org/licenses/gpl-2.0.php).
+This project is licensed under the [MIT License](http://www.opensource.org/licenses/mit-license.php).
 
 ## Requirements
 
-So what do you need to run this solution on this server ?
+So what do you need to run this solution ?
 
-* Javascript turned on in the client browser
-* At least PHP 5.1 on the server (needs [PDO](http://www.php.net/manual/ref.pdo-sqlite.php) with SQLite support).
+* Javascript turned on in the client browser. This is pure JS, no library (like jQuery) required.
+* At least PHP 5.1 (requires [PDO](http://www.php.net/manual/intro.pdo.php)) on the server.
 * some _really basic_ setup
 
-## Setup
+## Test Setup (by default with SQLite)
 
-Push to your server the following files, say in the ```/js/livestats``` repository:
+
+As you can't wait to see ```livestats``` in action, go to your __test__ server 
+and push the following files, say in the ```/js/livestats``` repository:
 
 ```
 /js/livestats
@@ -50,6 +51,8 @@ Push to your server the following files, say in the ```/js/livestats``` reposito
     |  |  +- livestats.sqlite (Make sure it is writable !)
     |  |
     |  +- php
+    |     +- config.inc.php
+    |     +- DBConnector.php
     |     +- livestats.php
     |     +- State.php
     |
@@ -74,6 +77,19 @@ can tweak that giving a second parameter to the ```Livestats``` constructor.
   // Starting a new spy with a ping interval of 15 seconds.
   var spy = new Livestats('js/livestats/backend/php/livestats.php', 15);
 ```
+
+## Production Setup (with MySQL or other)
+
+I've seen that with a heartbeat interval of __30__ seconds, SQLite begins to show
+its limits when you get more than __100__ connected visitors at the same time.
+
+Using MySQL (or any other DMS) is very simple with PDO:
+
+* Make sure the driver for MySQL is available on your PHP setup (use [phpinfo](http://php.net/manual/function.phpinfo.php))
+* Create a new schema on your DB server and create the livestats table with ```livestats/backend/db/livestats.sql```
+* Open ```livestats/backend/php/config.inc.php``` and update the ```$livestats_db_config``` setup.
+
+And you're done! Your livestats instance should now use MySQL.
 
 ## Usage example
 

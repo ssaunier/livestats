@@ -9,8 +9,11 @@
  * {"total":42,"idle":"30","reading":10,"writing":2}
  */
 require_once(dirname(__FILE__) . '/../backend/php/State.php');
+require_once(dirname(__FILE__) . '/../backend/php/config.inc.php');
+require_once(dirname(__FILE__) . '/../backend/php/DBConnector.php');
+$db = new DBConnector($livestats_db_config);
 
 header('Cache-Control: no-cache, must-revalidate');
 header('Content-type: application/json');
-echo json_encode(State::countStates());
+echo json_encode(State::countStates($db));
 ?>
