@@ -28,7 +28,7 @@
  */
 
 $livestats_db_config = array(
-    'dsn' => 'sqlite:'  // By default, it will use
+    'dsn' => 'sqlite:'  // By default, it will use the ../db/livestats.sqlite file
 );
 
 ?>
