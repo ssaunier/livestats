@@ -86,8 +86,8 @@ its limits when you get more than __100__ connected visitors at the same time.
 Using MySQL (or any other DMS) is very simple with PDO:
 
 * Make sure the driver for MySQL is available on your PHP setup (use [phpinfo](http://php.net/manual/function.phpinfo.php))
-* Create a new schema on your DB server and create the livestats table with ```livestats/backend/db/livestats.sql```
-* Open ```livestats/backend/php/config.inc.php``` and update the ```$livestats_db_config``` setup.
+* Create a new schema on your DB server and create the livestats table with ```livestats/backend/db/livestats.sql``` ([view](https://github.com/ssaunier/livestats/blob/master/backend/db/livestats.sql))
+* Open ```livestats/backend/php/config.inc.php``` ([view](https://github.com/ssaunier/livestats/blob/master/backend/php/config.inc.php)) and update the ```$livestats_db_config``` setup.
 
 And you're done! Your livestats instance should now use MySQL.
 
