@@ -76,7 +76,7 @@ class State {
                 'REPLACE INTO %s VALUES (%s, %s, %s)',
                 self::TABLE,
                 $db->quote($this->sessionId),
-                $db->quote(date("Y-m-d h:i:s")),
+                $db->quote(date("Y-m-d H:i:s")),
                 $this->state);
         $db->exec($query);
     }
@@ -147,7 +147,7 @@ class State {
      */
     private static function _clearTimeout($db, $timeout)
     {  
-        $timeout_date = date("Y-m-d h:i:s", strtotime($timeout));
+        $timeout_date = date("Y-m-d H:i:s", strtotime($timeout));
         $query = sprintf(
             "DELETE FROM %s WHERE last_seen < %s",
             self::TABLE, $db->quote($timeout_date));

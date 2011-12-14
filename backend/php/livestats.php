@@ -31,4 +31,6 @@ require_once(dirname(__FILE__) . '/config.inc.php');
 require_once(dirname(__FILE__) . '/DBConnector.php');
 $db = new DBConnector($livestats_db_config);
 $state->store($db);
+
+echo session_id();
 ?>
