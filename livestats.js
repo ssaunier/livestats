@@ -77,47 +77,47 @@ function Livestats(pingUrl, pingInterval)
             _state = State.IDLE;
 
         _reportState();
-    };
+    }
     
     function _reportState() {
         _pingServerWithNewState();
         _rebindHandlers();
-    };
+    }
     
     function _pingServerWithNewState() {
         xhr = _createXMLHttpRequest();
         if (xhr) {
             var params =
-                "state=" + _state
-              + "&url=" + encodeURIComponent(window.location.href)
-              + "&title=" + encodeURIComponent(document.title);
+                "state=" + _state +
+                "&url=" + encodeURIComponent(window.location.href) +
+                "&title=" + encodeURIComponent(document.title);
               
             xhr.open("POST", _pingUrl, true);
             xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             xhr.send(params);
         }
-    };
+    }
     
     function _rebindHandlers() {
         _events._mouseActivityDetected = false;
         _events._keyPressed = false;
         document.onmousemove = function() {
             _events._mouseActivityDetected = true;
-        }
+        };
         document.onkeypress = function() {
             _events._keyPressed = true;
-        }
-    };
+        };
+    }
     
     function _computeScrolling() {
         var newScrollPosition = 
             (document.body && typeof document.body.scrollTop !== "undefined") ?
                 document.body.scrollTop : 
-                ((typeof document.documentElement !== "undefined") 
-                ? document.documentElement.scrollTop : 0);
+                ((typeof document.documentElement !== "undefined") ?
+                  document.documentElement.scrollTop : 0);
         _events._mouseScrolled = newScrollPosition != _scrollPosition;
         _scrollPosition = newScrollPosition;
-    };
+    }
     
     function _createXMLHttpRequest() {
          try { return new XMLHttpRequest(); } catch(e) {}
@@ -126,5 +126,6 @@ function Livestats(pingUrl, pingInterval)
              console.log('Ajax not supported by your browser. Disabling the timer...');
          }
          that.stop();
-     };
-};
+         return null;
+    }
+}
