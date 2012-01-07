@@ -8,8 +8,10 @@
 # The 'MyISAM' engine declaration should be removed id you don't use MySQL.
 
 CREATE TABLE `livestats` (
-  `session_id` varchar(255) NOT NULL,
-  `last_seen` datetime DEFAULT NULL,
+  `session_id` VARCHAR(255) NOT NULL,
+  `last_seen` DATETIME DEFAULT NULL,
   `state` int(11) NOT NULL DEFAULT 0,
+  `url` TEXT NOT NULL,
+  `title` TEXT NOT NULL,
   PRIMARY KEY (`session_id`)
 ) ENGINE=MyISAM;

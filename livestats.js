@@ -87,7 +87,11 @@ function Livestats(pingUrl, pingInterval)
     function _pingServerWithNewState() {
         xhr = _createXMLHttpRequest();
         if (xhr) {
-            var params = "state=" + _state;
+            var params =
+                "state=" + _state
+              + "&url=" + encodeURIComponent(window.location.href)
+              + "&title=" + encodeURIComponent(document.title);
+              
             xhr.open("POST", _pingUrl, true);
             xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             xhr.send(params);

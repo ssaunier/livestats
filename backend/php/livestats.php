@@ -23,6 +23,8 @@ if (!array_key_exists('state', $_POST))
 // Create a State object for this request.
 require_once(dirname(__FILE__) . '/State.php');
 $state = new State($_POST['state'], session_id());
+$state->setUrl($_POST['url']);
+$state->setTitle($_POST['title']);
 if (!$state->isValid())
     die();
 

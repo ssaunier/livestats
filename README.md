@@ -113,9 +113,10 @@ For the first release, Livestats only collect:
 
 * Number of visitors
 * State of each visitor: Idle, Reading or Writing
+* Current URL + Page title visited
 
 What we may want to add ([Fork](https://github.com/ssaunier/livestats/fork)!) to future releases:
 
-* URL visited
-* Referer
-* Keywords
+* Referrer (javascript ```document.referrer```)
+* Keywords (backend parsing of referrer)
+* ... (ask me !)

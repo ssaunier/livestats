@@ -37,6 +37,16 @@ class State {
     private $state;
     
     /**
+     * The URL of the page the user is currently viewing.
+     */
+    private $url;
+    
+    /**
+     * The title of the page the user is currently viewing.
+     */
+    private $title;
+    
+    /**
      * The session_id() of $this visitor.
      */
     private $sessionId;
@@ -64,6 +74,22 @@ class State {
     }
     
     /**
+     * Set the URL coming from the javascript client.
+     */
+    public function setUrl($dirtyUrl)
+    {
+        $this->url = $dirtyUrl;
+    }
+    
+    /**
+     * Set the title coming from the javascript client.
+     */
+    public function setTitle($dirtyTitle)
+    {
+        $this->title = $dirtyTitle;
+    }
+    
+    /**
      * Stores the current State to the DB.
      */ 
     public function store($db)
@@ -73,11 +99,13 @@ class State {
         
         $query = 
             sprintf(
-                'REPLACE INTO %s VALUES (%s, %s, %s)',
+                'REPLACE INTO %s VALUES (%s, %s, %s, %s, %s)',
                 self::TABLE,
                 $db->quote($this->sessionId),
                 $db->quote(date("Y-m-d H:i:s")),
-                $this->state);
+                $this->state,
+                $db->quote($this->url),
+                $db->quote($this->title));
         $db->exec($query);
     }
 
@@ -118,6 +146,37 @@ class State {
                      'idle' => $idle,
                      'reading' => $reading,
                      'writing' => $writing);
+    }
+    
+    /**
+     * Count the number of IDLE, READING, WRITING visitors in realtime
+     * + return the list of current visited pages with individual visitor counters.
+     * 
+     * @param $db connection to the database.
+     * @param $timeout after which an entry is removed from the DB (relatively to last_seen column)
+     * @return an array('total', 'idle', 'reading', 'writing')
+     */
+    public static function fullReport($db, $timeout = '-1 minute')
+    {
+        $result = self::countStates($db, $timeout);
+        
+        $query = sprintf('SELECT COUNT(*) as c, url, title FROM %s GROUP BY url', self::TABLE);
+        $pages = array();
+        
+        $results = $db->fetch($query);
+        if (!empty($results)) {
+            foreach ($results as $entry) {
+                $page = array(
+                    'url' => $entry['url'],
+                    'title' => $entry['title'],
+                    'visitors' => $entry['c']
+                );
+                array_push($pages, $page);
+            }
+        }
+        
+        $result['pages'] = $pages;
+        return $result;
     }
     
     /**

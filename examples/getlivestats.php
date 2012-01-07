@@ -15,5 +15,10 @@ $db = new DBConnector($livestats_db_config);
 
 header('Cache-Control: no-cache, must-revalidate');
 header('Content-type: application/json');
-echo json_encode(State::countStates($db, '-1 minute'));
+$aggregated = State::countStates($db, '-1 minute');
+$fullReport = State::fullReport($db, '-1 minute');
+echo json_encode(array(
+    'aggregatedOnly' => $aggregated,
+    'fullReport' => $fullReport
+));
 ?>
