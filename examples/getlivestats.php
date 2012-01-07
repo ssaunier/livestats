@@ -15,5 +15,5 @@ $db = new DBConnector($livestats_db_config);
 
 header('Cache-Control: no-cache, must-revalidate');
 header('Content-type: application/json');
-echo json_encode(State::countStates($db));
+echo json_encode(State::countStates($db, '-15 seconds'));
 ?>

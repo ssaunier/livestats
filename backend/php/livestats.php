@@ -17,7 +17,7 @@
 session_start();
 
 // Sanity check. Don't go further if the POST request is invalid.
-if (!array_key_exists('sessionId', $_POST) || !array_key_exists('state', $_POST))
+if (!array_key_exists('state', $_POST))
     die();
 
 // Create a State object for this request.
@@ -32,5 +32,5 @@ require_once(dirname(__FILE__) . '/DBConnector.php');
 $db = new DBConnector($livestats_db_config);
 $state->store($db);
 
-echo session_id();
+echo 'ok';
 ?>

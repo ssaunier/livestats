@@ -17,8 +17,16 @@ function Livestats(pingUrl, pingInterval)
      * Start to track the current visitor by sending a heartbeat.
      * every _pingInterval to _pingUrl.
      */ 
-    this.start = function() {
-        _reportState();
+    this.start = function() {    
+        // Report we're reading on startup, non blocking call.
+        setTimeout(function() { 
+            _reportState();
+        }, 1);
+        
+        // Set interval for future notification of state.
+        that._timer = setInterval(function() {
+             _computeState();
+        }, _pingInterval * 1000);
     };
     
     /**
@@ -43,7 +51,6 @@ function Livestats(pingUrl, pingInterval)
     var _timer = null;
     var _state = 1;  // When loading the page, the user is reading.
     var _scrollPosition = 0;
-    var _sessionId = null;
     
     // Events we want to capture to track visitor activity.
     var _events =
@@ -75,20 +82,15 @@ function Livestats(pingUrl, pingInterval)
     function _reportState() {
         _pingServerWithNewState();
         _rebindHandlers();
-        _setTimer();
     };
     
     function _pingServerWithNewState() {
         xhr = _createXMLHttpRequest();
         if (xhr) {
-            var params = "state=" + _state + "&sessionId=" + _sessionId;
+            var params = "state=" + _state;
             xhr.open("POST", _pingUrl, true);
             xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             xhr.send(params);
-            xhr.onreadystatechange = function() {
-              if (xhr.readyState == 4)
-                  _sessionId  = xhr.responseText;
-            }
         }
     };
     
@@ -118,13 +120,7 @@ function Livestats(pingUrl, pingInterval)
          try { return new ActiveXObject("Msxml2.XMLHTTP"); } catch (e) {}
          if (window.console && window.console.log) {
              console.log('Ajax not supported by your browser. Disabling the timer...');
-             that.stop();
          }
-     };
-    
-     function _setTimer() {
-         that._timer = setTimeout(function() {
-             _computeState();
-         }, _pingInterval * 1000);
+         that.stop();
      };
 };
