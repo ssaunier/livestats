@@ -2,13 +2,26 @@
 
 ## Goal: a lightweight solution to get a real-time snapshot of your visitor activity.
 
-The idea is to get a dashboard like this.
+The idea is to get a simple dashboard like this:
 
 ```
 +--------+--------+--------+--------+
 |   42   |   36   |    2   |   4    |
 |  Total |  Read  |  Write |  Idle  |
 +--------+--------|--------+--------|
+```
+
+and more extended features like this:
+
+```
++-------------------------------+-----------------------+----------+
+| Url                           | Title                 | Visitors |
++-------------------------------+-----------------------+----------+
+| http://example.org/index.html | Example - Index       | 18       |
+| http://example.org/foo.html   | Foo - a great article | 12       |
+| http://example.org/bar.html   | Bar - another one     | 7        |
+| ...                           | ...                   | ...      |
++-------------------------------+-----------------------+----------+
 ```
 
 ## Motivation: build and share basic features of realtime tracking services.
