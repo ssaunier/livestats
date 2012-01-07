@@ -59,7 +59,7 @@ and push the following files, say in the ```/js/livestats``` repository:
     +- livestats.js
 ```
 
-Then open your main page ```index.php``` and add at the very bottom (just before ```</body>```):
+Then open your main page, say ```index.php```, and add at the very bottom (just before ```</body>```):
 
 ```html
 <script type="text/javascript" src="js/livestats/livestats.js"></script>
@@ -78,19 +78,6 @@ can tweak that giving a second parameter to the ```Livestats``` constructor.
   var spy = new Livestats('js/livestats/backend/php/livestats.php', 15);
 ```
 
-## Production Setup (with MySQL or other)
-
-I've seen that with a heartbeat interval of __30__ seconds, SQLite begins to show
-its limits when you get more than __100__ connected visitors at the same time.
-
-Using MySQL (or any other DMS) is very simple with PDO:
-
-* Make sure the driver for MySQL is available on your PHP setup (use [phpinfo](http://php.net/manual/function.phpinfo.php))
-* Create a new schema on your DB server and create the livestats table with ```livestats/backend/db/livestats.sql``` ([view](https://github.com/ssaunier/livestats/blob/master/backend/db/livestats.sql))
-* Open ```livestats/backend/php/config.inc.php``` ([view](https://github.com/ssaunier/livestats/blob/master/backend/php/config.inc.php)) and update the ```$livestats_db_config``` setup.
-
-And you're done! Your livestats instance should now use MySQL.
-
 ## Usage example
 
 You can use the library ```backend/php/State.php``` to use the information
@@ -106,6 +93,19 @@ $state = State::countStates();
 
 You can also setup a cron job to feed a [Ducksboard](http://www.ducksboard.com) dashboard.
 You can view this example on [Gist](https://gist.github.com/1430616).
+
+## Production Setup (with MySQL or other)
+
+I've seen that with a heartbeat interval of __30__ seconds, SQLite begins to show
+its limits when you get more than __100__ connected visitors at the same time.
+
+Using MySQL (or any other DMS) is very simple with PDO:
+
+* Make sure the driver for MySQL is available on your PHP setup (use [phpinfo](http://php.net/manual/function.phpinfo.php))
+* Create a new schema on your DB server and create the livestats table with ```livestats/backend/db/livestats.sql``` ([view](https://github.com/ssaunier/livestats/blob/master/backend/db/livestats.sql))
+* Open ```livestats/backend/php/config.inc.php``` ([view](https://github.com/ssaunier/livestats/blob/master/backend/php/config.inc.php)) and update the ```$livestats_db_config``` setup.
+
+And you're done! Your livestats instance should now use MySQL.
 
 ## Information collected
 
