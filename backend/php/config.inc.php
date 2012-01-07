@@ -18,6 +18,9 @@
  *         'dsn' => 'mysql:host=localhost;dbname=livestats',
  *         'user' => 'livestats',
  *         'password' => '',
+ *         'driver_options' => array(
+ *             PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"
+ *         )
  *     );
  * 
  * Example 2 (SQLite):
