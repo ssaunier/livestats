@@ -1,7 +1,8 @@
 # Livestats - Track your visitors in real-time !
 
-## Goal: a lightweight solution to get a real-time snapshot of your visitor activity.
+## Goal
 
+This project is a lightweight solution to get a real-time snapshot of your visitor activity.
 The idea is to get a simple dashboard like this:
 
 ```
@@ -17,16 +18,17 @@ and more extended features like this:
 +-------------------------------+-----------------------+----------+
 | Url                           | Title                 | Visitors |
 +-------------------------------+-----------------------+----------+
-| http://example.org/index.html | Example - Index       | 18       |
-| http://example.org/foo.html   | Foo - a great article | 12       |
-| http://example.org/bar.html   | Bar - another one     | 7        |
+| http://mysite.org/index.html  | MySite - Index        | 18       |
+| http://mysite.org/foo.html    | Foo - a great article | 12       |
+| http://mysite.org/bar.html    | Bar - another one     | 7        |
 | ...                           | ...                   | ...      |
 +-------------------------------+-----------------------+----------+
 ```
 
-## Motivation: build and share basic features of realtime tracking services.
+## Motivation
 
-I started this project after using 
+I wanted to build and share basic features of realtime tracking services. I started 
+this project after using 
 [GoSquared](http://www.gosquared.com/) and [Chartbeat](http://www.chartbeat.com/).
 These are really cool web applications which let you dive in the details of
 who's doing what _right now_.
@@ -51,7 +53,7 @@ So what do you need to run this solution ?
 * At least PHP 5.1 (requires [PDO](http://www.php.net/manual/intro.pdo.php)) on the server.
 * some _really basic_ setup
 
-## Test Setup (by default with SQLite)
+## Test Setup (SQLite)
 
 
 As you can't wait to see ```livestats``` in action, go to your __test__ server 
@@ -107,7 +109,7 @@ $state = State::countStates();
 You can also setup a cron job to feed a [Ducksboard](http://www.ducksboard.com) dashboard.
 You can view this example on [Gist](https://gist.github.com/1430616).
 
-## Production Setup (with MySQL or other)
+## Production Setup (MySQL)
 
 I've seen that with a heartbeat interval of __30__ seconds, SQLite begins to show
 its limits when you get more than __100__ connected visitors at the same time.
