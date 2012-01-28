@@ -15,14 +15,14 @@ The idea is to get a simple dashboard like this:
 and more extended features like this:
 
 ```
-+-------------------------------+-----------------------+----------+
-| Url                           | Title                 | Visitors |
-+-------------------------------+-----------------------+----------+
-| http://mysite.org/index.html  | MySite - Index        | 18       |
-| http://mysite.org/foo.html    | Foo - a great article | 12       |
-| http://mysite.org/bar.html    | Bar - another one     | 7        |
-| ...                           | ...                   | ...      |
-+-------------------------------+-----------------------+----------+
++---------------------------+-----------------------+----------+
+| Url                       | Title                 | Visitors |
++---------------------------+-----------------------+----------+
+| mysite.org/index.html     | MySite - Index        | 18       |
+| mysite.org/foo.html       | Foo - a great article | 12       |
+| mysite.org/bar.html       | Bar - another one     | 7        |
+| ...                       | ...                   | ...      |
++---------------------------+-----------------------+----------+
 ```
 
 ## Motivation
