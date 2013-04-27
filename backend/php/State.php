@@ -156,7 +156,7 @@ class State {
      * @param $timeout after which an entry is removed from the DB (relatively to last_seen column)
      * @return an array('total', 'idle', 'reading', 'writing')
      */
-    public static function fullReport($db, $timeout = '-1 minute')
+    public static function fullReport($db, $timeout = '-30 seconds')
     {
         $result = self::countStates($db, $timeout);
         
