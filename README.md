@@ -85,7 +85,7 @@ Then open your main page, say ```index.php```, and add at the very bottom (just 
 ```
 
 It will setup a ```Livestats``` javascript object and start hearbeating
-to your server. The default ping interval is set to 30 seconds, but you
+to your server. The default ping interval is set to 15 seconds, but you
 can tweak that giving a second parameter to the ```Livestats``` constructor.
 
 ```javascript
@@ -111,7 +111,7 @@ You can view this example on [Gist](https://gist.github.com/1430616).
 
 ## Production Setup (MySQL)
 
-I've seen that with a heartbeat interval of __30__ seconds, SQLite begins to show
+I've seen that with a heartbeat interval of __15__ seconds, SQLite begins to show
 its limits when you get more than __100__ connected visitors at the same time.
 
 Using MySQL (or any other DMS) is very simple with PDO:
